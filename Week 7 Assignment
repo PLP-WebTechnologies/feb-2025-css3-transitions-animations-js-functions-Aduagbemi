@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS3 Transitions, Animations, and Local Storage</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Interactive Button Animation</h1>
+    <button id="animateButton" class="btn">Click Me</button>
+    <p id="statusText">Button has not been clicked yet.</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+main.css
+/* Basic styles */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+  }
+  
+  /* Animation for button */
+  @keyframes buttonAnimation {
+    0% {
+      transform: scale(1);
+      background-color: #3498db;
+    }
+    50% {
+      transform: scale(1.2);
+      background-color: #e74c3c;
+    }
+    100% {
+      transform: scale(1);
+      background-color: #3498db;
+    }
+  }
+  
+  button.clicked {
+    animation: buttonAnimation 0.5s ease-in-out;
+  }
+  
+  #statusText {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+script.js
+
+// Get the elements
+const button = document.getElementById("animateButton");
+const statusText = document.getElementById("statusText");
+
+// Function to check the user preference stored in localStorage
+function checkButtonState() {
+  const buttonClicked = localStorage.getItem("buttonClicked");
+  
+  // If the button has been clicked previously, apply the animation and update status text
+  if (buttonClicked === "true") {
+    button.classList.add("clicked");
+    statusText.textContent = "Button has been clicked previously.";
+  }
+}
+
+// Function to handle button click event
+function handleButtonClick() {
+  button.classList.add("clicked"); // Apply the animation class
+  statusText.textContent = "Button clicked!"; // Update status text
+  
+  // Store the button click state in localStorage
+  localStorage.setItem("buttonClicked", "true");
+}
+
+// Attach the event listener for button click
+button.addEventListener("click", handleButtonClick);
+
+// Check if button was clicked previously when the page loads
+checkButtonState();
